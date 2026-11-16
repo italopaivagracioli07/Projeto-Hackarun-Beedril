@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#15132a" />
+  <title>VibeMind — Demonstração do Storage</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <button id="logo" class="logo" type="button" title="VibeMind" aria-label="Logo VibeMind">✦</button>
+      <div><div class="brand">VibeMind <span class="brand-tag">Storage MVP</span></div>
+        <p class="subhead">Equipe 04 • Mega Beedrill • HackaRun 2026</p></div>
+    </header>
+
+    <main>
+      <div class="notice"><strong>Demonstração local.</strong> Os registros ficam somente neste navegador. Para coletar dados de vários celulares, é necessário integrar um banco compartilhado.</div>
+      <nav class="tabs" aria-label="Seções do protótipo">
+        <button class="tab active" data-target="visitor" aria-pressed="true" type="button">① Visitante</button>
+        <button class="tab" data-target="admin" aria-pressed="false" type="button">② EventMind</button>
+        <button class="tab" data-target="storage" aria-pressed="false" type="button">③ Storage</button>
+      </nav>
+      <div id="status" role="status" aria-live="polite" class="status" hidden></div>
+
+      <section id="visitor" class="panel">
+        <h1>O que combina com você?</h1>
+        <p class="intro">Escolha seus interesses. Não pedimos nome, e-mail ou telefone.</p>
+        <form id="preference-form">
+          <fieldset>
+            <legend>Quais atividades você mais gosta?</legend>
+            <div class="interest-grid">
+              <label class="interest"><input type="checkbox" name="interest" value="musica"/><span>🎵 <strong>Música</strong></span></label>
+              <label class="interest"><input type="checkbox" name="interest" value="jogos"/><span>🎮 <strong>Jogos</strong></span></label>
+              <label class="interest"><input type="checkbox" name="interest" value="cultura"/><span>🎨 <strong>Arte e cultura</strong></span></label>
+              <label class="interest"><input type="checkbox" name="interest" value="infantil"/><span>🎡 <strong>Família e crianças</strong></span></label>
+              <label class="interest"><input type="checkbox" name="interest" value="gastronomia"/><span>🍲 <strong>Gastronomia</strong></span></label>
+              <label class="interest"><input type="checkbox" name="interest" value="tecnologia"/><span>🤖 <strong>Tecnologia</strong></span></label>
+            </div>
+          </fieldset>
+          <div class="two-cols">
+            <label>Faixa etária (opcional)
+              <select id="age-range">
+                <option value="nao-informado">Prefiro não informar</option>
+                <option value="crianca">Criança (com responsável)</option>
+                <option value="adolescente">Adolescente</option>
+                <option value="adulto">Adulto</option>
+                <option value="idoso">Pessoa idosa</option>
+              </select>
+            </label>
+            <label>Quando prefere participar?
+              <select id="schedule">
+                <option value="indiferente">Qualquer horário</option>
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+                <option value="noite">Noite</option>
+              </select>
+            </label>
+          </div>
+          <label>Como chegou à pesquisa?
+            <select id="channel"><option value="qr">QR Code / celular</option><option value="totem">Totem / tablet</option><option value="assistido">Atendimento assistido</option></select>
+          </label>
+          <div class="actions"><button type="button" id="save-draft" class="secondary">Salvar rascunho nesta aba</button><button class="primary" type="submit">Salvar preferências</button></div>
+        </form>
+        <div class="result-block"><h2>Eventos recomendados</h2><p class="small">Recomendações simples por categoria, não por uma IA treinada.</p><div id="recommended" class="event-list"><p class="empty">Selecione interesses e envie a pesquisa para ver recomendações.</p></div></div>
+        <div class="result-block"><h2>Avalie um evento</h2><form id="evaluation-form" class="two-cols">
+          <label>Evento <select id="evaluation-event" required></select></label>
+          <label>Nota <select id="rating"><option value="5">⭐⭐⭐⭐⭐ (5)</option><option value="4">⭐⭐⭐⭐ (4)</option><option value="3">⭐⭐⭐ (3)</option><option value="2">⭐⭐ (2)</option><option value="1">⭐ (1)</option></select></label>
+          <button class="secondary" type="submit">Registrar avaliação</button>
+        </form></div>
+      </section>
+
+      <section id="admin" class="panel" hidden>
+        <div class="headline"><div><h1>EventMind</h1><p class="intro">Painel demonstrativo de planejamento e avaliação de eventos.</p></div><span id="demo-badge" class="demo-badge" hidden>Dados fictícios</span></div>
+        <div id="metrics" class="metrics"></div>
+        <div class="two-cols admin-grid">
+          <div class="result-block"><h2>Interesses dos visitantes</h2><div id="interests-chart"></div></div>
+          <div class="result-block"><h2>Origem das respostas</h2><div id="channel-chart"></div></div>
+        </div>
+        <div class="result-block"><h2>Eventos e avaliações</h2><div id="events-admin" class="event-list"></div></div>
+        <div class="result-block"><h2>Adicionar evento demonstrativo</h2>
+          <form id="event-form" class="event-form">
+            <label>Nome <input id="event-title" type="text" required maxlength="120" placeholder="Ex.: Encontro de música local" /></label>
+            <label>Categoria <select id="event-category"></select></label>
+            <label>Data <input id="event-date" type="date" required /></label>
+            <button class="primary" type="submit">Cadastrar evento</button>
+          </form></div>
+      </section>
+
+      <section id="storage" class="panel" hidden>
+        <h1>Como o Storage funciona?</h1>
+        <p class="intro"><strong>localStorage</strong> mantém os registros locais entre visitas ao site. <strong>sessionStorage</strong> guarda o rascunho da pesquisa enquanto a aba está aberta.</p>
+        <div class="actions"><button id="seed-demo" type="button" class="primary">Carregar dados fictícios</button><button id="export-data" type="button" class="secondary">Exportar backup JSON</button><button id="clear-data" type="button" class="danger">Apagar dados desta demo</button></div>
+        <label class="import-label">Importar backup do VibeMind (substitui os dados atuais) <input id="import-file" type="file" accept="application/json,.json" /></label>
+        <div class="result-block"><h2>Visualização dos registros salvos</h2><pre id="snapshot" class="json"></pre></div>
+        <p class="small">⚠️ Não armazenar senhas, tokens privados ou informações sensíveis no localStorage. O protótipo coleta apenas escolhas anônimas.</p>
+      </section>
+
+      <aside id="secret" class="secret" hidden role="status"><strong>☠ Sexta-feira 13 desbloqueada!</strong><p>Evento secreto: A Noite das 13 Experiências. Você encontrou o Easter Egg da Mega Beedrill.</p></aside>
+    </main>
+    <footer>VibeMind • MVP de armazenamento • Demo de navegação local</footer>
+  </div>
+</body>
+</html>
